@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ArmoryX | Tactical Firearms</title>
+<link rel="icon" type="image/png" href="logo.png">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: "Poppins", sans-serif; background-color: #0d0d0d; color: #e5e5e5; }
+
+  /* Navbar */
+  nav {
+    background: linear-gradient(90deg, #0f0f0f, #1a1a1a);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 60px;
+    position: sticky;
+    top: 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    transition: transform 0.3s ease-in-out;
+    z-index: 1000;
+  }
+  .logo { color: #00ffc8; font-size: 28px; font-weight: bold; }
+  .nav-links { display: flex; gap: 35px; }
+  .nav-links a {
+    color: #e5e5e5; text-decoration: none; font-size: 18px; position: relative; transition: 0.3s;
+  }
+  .nav-links a::after {
+    content:""; position:absolute; left:0; bottom:-5px; width:0; height:2px; background:#00ffc8; transition: width 0.3s;
+  }
+  .nav-links a:hover { color:#00ffc8; }
+  .nav-links a:hover::after { width:100%; }
+
+  .search-box {
+    display: flex; align-items: center; background: #1c1c1c; border-radius: 30px; padding: 5px 10px; position: relative;
+  }
+  .search-box input {
+    background: none; border: none; outline: none; color: #e5e5e5; font-size: 15px; padding: 8px; width: 160px;
+  }
+  .search-box button {
+    background: #00ffc8; color: #000; border: none; border-radius: 25px; padding: 8px 15px; font-weight: bold; cursor: pointer; transition: 0.3s;
+  }
+  .search-box button:hover { background: #00b38f; }
+
+  /* Cart Button in navbar */
+  .cart-button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #00ffc8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #000;
+    font-size: 22px;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 3px 10px rgba(0,255,200,0.4);
+    margin-left: 15px;
+  }
+  .cart-button:hover { background-color: #00b38f; }
+
+  /* Hero Slider */
+  .hero-slider { position: relative; width: 100%; height: 60vh; overflow: hidden; }
+  .slide { position: absolute; top:0; left:0; width:100%; height:100%; background-size: cover; background-position: center; filter: brightness(0.7); opacity:0; transition: opacity 1.2s ease-in-out; }
+  .slide:nth-child(1) { animation: slideShow 12s infinite; }
+  .slide:nth-child(2) { animation: slideShow 12s infinite 4s; }
+  .slide:nth-child(3) { animation: slideShow 12s infinite 8s; }
+  @keyframes slideShow { 0% {opacity:0;} 10% {opacity:1;} 30% {opacity:1;} 40% {opacity:0;} 100% {opacity:0;} }
+  .hero-text { position:absolute; bottom:30px; left:30px; color:#00ffc8; z-index:2; }
+  .hero-text h1 { font-size: clamp(32px,5vw,60px); text-shadow: 0 0 15px rgba(0,255,200,0.4); }
+  .hero-text p { font-size:18px; margin-top:10px; color:#ccc; }
+
+  /* Card Grid */
+  .container { max-width:1200px; margin:60px auto; padding:0 20px; }
+  .grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:25px; }
+  .card { background:#141414; border:1px solid rgba(255,255,255,0.08); border-radius:12px; overflow:hidden; transition:0.3s; }
+  .card:hover { transform:translateY(-5px); box-shadow:0 10px 25px rgba(0,255,200,0.15); }
+  .card img { width:100%; height:220px; object-fit:cover; filter: brightness(0.9); }
+  .card-content { text-align:center; padding:20px; }
+  .card-content h3 { color:#00ffc8; margin-bottom:8px; }
+  .card-content p { color:#b5b5b5; font-size:14px; margin-bottom:15px; }
+  .card-content button { background:#00ffc8; color:#000; border:none; padding:10px 22px; border-radius:6px; font-weight:bold; cursor:pointer; transition:0.3s; }
+  .card-content button:hover { background:#00b38f; }
+
+  /* Footer */
+  footer { background:#111; text-align:center; padding:25px 10px; color:#999; border-top:1px solid rgba(255,255,255,0.1); font-size:14px; }
+  footer div:last-child a { text-decoration:none; }
+
+  @media (max-width:768px){ nav { flex-wrap:wrap; justify-content:center; padding:15px 30px; } .nav-links { gap:20px; } .hero-slider { height:50vh; } }
+  @media (max-width:480px){ .nav-links a { font-size:15px; } .search-box input { width:100px; } }
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <div class="logo">ArmoryX</div>
+  
+  <div class="nav-links">
+    <a href="Home_Page.html">Home</a>
+    <a href="Service_Terms.html">Service Term</a>
+    <a href="Contact_Page.html">Contact</a>
+    <a href="About_Page.html">About</a>
+  </div>
+
+  <div style="display:flex; align-items:center;">
+    <!-- Search Box -->
+    <div class="search-box">
+      <input id="searchInput" type="text" placeholder="Search...">
+      <button id="searchBtn">Go</button>
+      <div id="suggestions" class="suggestions"></div>
+    </div>
+
+    <!-- Cart Button -->
+    <div class="cart-button" onclick="window.location.href='cartPage.html'">🛒</div>
+  </div>
+</nav>
+
+<!-- HERO SLIDER -->
+<section class="hero-slider">
+  <div class="slide" style="background-image: url('precision.webp');">
+    <div class="hero-text"><h1>Precision</h1><p>Discover the world’s finest tactical firearms designed for accuracy and control.</p></div>
+  </div>
+  <div class="slide" style="background-image: url('power.jpg');">
+    <div class="hero-text"><h1>Power</h1><p>Discover the world’s finest tactical firearms designed for unstoppable performance.</p></div>
+  </div>
+  <div class="slide" style="background-image: url('perfection.webp');">
+    <div class="hero-text"><h1>Perfection</h1><p>Discover the world’s finest tactical firearms built for ultimate precision.</p></div>
+  </div>
+</section>
+
+<!-- GUNS SECTION -->
+<div class="container">
+  <h2 style="color:#00ffc8; margin-bottom:20px;">Guns</h2>
+  <div class="grid">
+    <div class="card"><img src="AK-47.avif" alt="AK-47 Rifle"><div class="card-content"><h3>AK-47 Rifle</h3><p>Legendary design known for reliability and performance worldwide.</p><a href="card1.html"><button>Explore</button></a></div></div>
+    <div class="card"><img src="flock19.webp" alt="Glock 19"><div class="card-content"><h3>Glock 19</h3><p>Compact semi-automatic pistol with powerful precision.</p><a href="card2.html"><button>Explore</button></a></div></div>
+    <div class="card"><img src="sniperx12.jpg" alt="Sniper Rifle"><div class="card-content"><h3>Sniper X-12</h3><p>Long-range rifle for elite marksmen seeking unmatched accuracy.</p><a href="card3.html"><button>Explore</button></a></div></div>
+    <div class="card"><img src="tactical.jfif" alt="Tactical Rifle"><div class="card-content"><h3>Tactical AR-15</h3><p>Modern modular rifle system built for versatility and control.</p><a href="card4.html"><button>Explore</button></a></div></div>
+    <div class="card"><img src="berettam9.jfif" alt="Beretta M9"><div class="card-content"><h3>Beretta M9</h3><p>Classic sidearm trusted by military forces across the world.</p><a href="card5.html"><button>Explore</button></a></div></div>
+    <div class="card"><img src="stealersniper.jfif" alt="Stealth Sniper"><div class="card-content"><h3>Stealth Sniper</h3><p>Built for quiet precision and stealth field operations.</p><a href="card6.html"><button>Explore</button></a></div></div>
+  </div>
+</div>
+
+<!-- BULLETS SECTION -->
+<div class="container">
+  <h2 style="color:#00ffc8; margin-bottom:20px;">Bullets</h2>
+  <div class="grid">
+    <div class="card">
+      <img src="5.56mm Rounds.webp" alt="5.56mm Rounds">
+      <div class="card-content">
+        <h3>5.56mm Rounds</h3>
+        <p>High-velocity rifle ammunition for modern tactical rifles.</p>
+        <a href="card7.html"><button>Explore</button></a>
+      </div>
+    </div>
+    <div class="card">
+      <img src="9mm.jpg" alt="9mm Bullets">
+      <div class="card-content">
+        <h3>9mm Bullets</h3>
+        <p>Compact, reliable ammo ideal for pistols and SMGs.</p>
+        <a href="card8.html"><button>Explore</button></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- KNIVES SECTION -->
+<div class="container">
+  <h2 style="color:#00ffc8; margin-bottom:20px;">Knives</h2>
+  <div class="grid">
+    <div class="card">
+      <img src="combatknife.jfif" alt="Combat Knife">
+      <div class="card-content">
+        <h3>Combat Knife</h3>
+        <p>Durable multi-purpose knife for survival and tactical use.</p>
+        <a href="card9.html"><button>Explore</button></a>
+      </div>
+    </div>
+    <div class="card">
+      <img src="tacticalsword.jfif" alt="Tactical Sword">
+      <div class="card-content">
+        <h3>Tactical Sword</h3>
+        <p>Long-range blade designed for field and combat scenarios.</p>
+        <a href="card10.html"><button>Explore</button></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Footer -->
+<footer>
+  <div style="max-width:1200px; margin:auto; padding:40px 20px; display:grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap:30px; text-align:left;">
+    <div><h3 style="color:#00ffc8; margin-bottom:12px;">About ArmoryX</h3><p style="color:#b5b5b5; font-size:14px;">ArmoryX provides top-tier tactical firearms and accessories built for accuracy, reliability, and performance.</p></div>
+    <div><h3 style="color:#00ffc8; margin-bottom:12px;">Quick Links</h3><ul style="list-style:none; padding:0; font-size:14px; color:#b5b5b5;"><li><a href="#" style="color:#b5b5b5; text-decoration:none;">Home</a></li><li><a href="#" style="color:#b5b5b5; text-decoration:none;">Service Terms</a></li><li><a href="#" style="color:#b5b5b5; text-decoration:none;">About Us</a></li><li><a href="#" style="color:#b5b5b5; text-decoration:none;">Contact</a></li></ul></div>
+    <div><h3 style="color:#00ffc8; margin-bottom:12px;">Contact Us</h3><p style="color:#b5b5b5; font-size:14px;">📍 123 Tactical Ave, Defense City</p><p style="color:#b5b5b5; font-size:14px;">📞 0305-8694776</p><p style="color:#b5b5b5; font-size:14px;">✉️ muhammad.zubair2705@gmail.com</p></div>
+    <div><h3 style="color:#00ffc8; margin-bottom:12px;">Follow Us</h3><div style="display:flex; gap:15px; align-items:center;"><a href="#" style="color:#00ffc8; font-size:20px; text-decoration:none;">🌐</a><a href="#" style="color:#00ffc8; font-size:20px; text-decoration:none;">📘</a><a href="#" style="color:#00ffc8; font-size:20px; text-decoration:none;">🐦</a><a href="#" style="color:#00ffc8; font-size:20px; text-decoration:none;">📸</a></div></div>
+  </div>
+  <div style="border-top:1px solid rgba(255,255,255,0.1); text-align:center; padding:15px; color:#777; font-size:13px;">© 2025 ArmoryX. All Rights Reserved. | Designed by <span style="color:#00ffc8;">Zubair</span></div>
+</footer>
+
+<!-- Scripts -->
+<script>
+  // Navbar hide on scroll
+  let lastScrollTop = 0;
+  const nav = document.querySelector('nav');
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    nav.style.transform = scrollTop > lastScrollTop ? 'translateY(-100%)' : 'translateY(0)';
+    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+  });
+
+  // Search system
+  const items = [
+    { name: "AK-47 Rifle", page: "card.html" },
+    { name: "Glock 19", page: "card2.html" },
+    { name: "Sniper X-12", page: "card3.html" },
+    { name: "Tactical AR-15", page: "card4.html" },
+    { name: "Beretta M9", page: "card5.html" },
+    { name: "Stealth Sniper", page: "card6.html" },
+    { name: "5.56mm Rounds", page: "card7.html" },
+    { name: "9mm Rounds", page: "card8.html" },
+    { name: "Combat Knife", page: "card9.html" },
+    { name: "Tactical Sword", page: "card10.html" }
+  ];
+  const input = document.getElementById("searchInput");
+  const suggestionsBox = document.getElementById("suggestions");
+  const searchBtn = document.getElementById("searchBtn");
+  input.addEventListener("keyup", () => {
+    const value = input.value.trim().toLowerCase();
+    suggestionsBox.innerHTML = "";
+    if (value === "") { suggestionsBox.style.display = "none"; return; }
+    const filtered = items.filter(item => item.name.toLowerCase().includes(value));
+    if (filtered.length === 0) { suggestionsBox.style.display = "none"; return; }
+    filtered.forEach(item => {
+      const div = document.createElement("div");
+      div.textContent = item.name;
+      div.addEventListener("click", () => { window.location.href = item.page; });
+      suggestionsBox.appendChild(div);
+    });
+    suggestionsBox.style.display = "block";
+  });
+  searchBtn.addEventListener("click", () => {
+    const value = input.value.trim().toLowerCase();
+    const match = items.find(item => item.name.toLowerCase().includes(value));
+    if (match) { window.location.href = match.page; }
+  });
+  input.addEventListener("keypress", (e) => { if (e.key === "Enter") { searchBtn.click(); } });
+</script>
+
+</body>
+</html>

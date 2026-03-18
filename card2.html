@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ArmoryX | Glock 19</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: "Poppins", sans-serif;
+    background-color: #0d0d0d;
+    color: #e5e5e5;
+  }
+
+  /* Navbar */
+  nav {
+    background: linear-gradient(90deg, #0f0f0f, #1a1a1a);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 60px;
+    position: sticky;
+    top: 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    transition: transform 0.3s ease-in-out;
+    z-index: 1000;
+  }
+  .logo { color:#00ffc8; font-size:28px; font-weight:bold; }
+  .nav-links { display:flex; gap:35px; }
+  .nav-links a {
+    color:#e5e5e5; text-decoration:none; font-size:18px;
+    position: relative; transition:0.3s;
+  }
+  .nav-links a::after {
+    content:""; position:absolute; left:0; bottom:-5px;
+    width:0; height:2px; background:#00ffc8; transition:width 0.3s;
+  }
+  .nav-links a:hover { color:#00ffc8; }
+  .nav-links a:hover::after { width:100%; }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    width: 100%;
+    height: 60vh;
+    background: url('flock19.webp') center/cover no-repeat;
+    display:flex;
+    align-items:flex-end;
+    padding: 0 50px 40px 50px;
+    filter: brightness(0.7);
+  }
+  .hero-text { color:#00ffc8; }
+  .hero-text h1 { font-size:clamp(32px,5vw,60px); text-shadow:0 0 15px rgba(0,255,200,0.4); }
+  .hero-text p { font-size:18px; margin-top:10px; color:#ccc; max-width:700px; }
+
+  /* Main content */
+  .content {
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 0 20px;
+    display:flex;
+    gap:50px;
+    flex-wrap:wrap;
+  }
+  .content img {
+    width:100%;
+    max-width:500px;
+    border-radius:12px;
+    border:1px solid rgba(255,255,255,0.1);
+    filter: brightness(0.9);
+  }
+  .details {
+    flex:1;
+    min-width:300px;
+  }
+  .details h2 { color:#00ffc8; margin-bottom:20px; }
+  .details p { color:#b5b5b5; margin-bottom:15px; line-height:1.6; }
+  .details ul { list-style:none; padding:0; color:#b5b5b5; margin-bottom:20px; }
+  .details ul li { margin-bottom:10px; }
+  .details button {
+    background:#00ffc8; color:#000; border:none; padding:12px 25px;
+    border-radius:6px; font-weight:bold; cursor:pointer; transition:0.3s;
+  }
+  .details button:hover { background:#00b38f; }
+
+  /* Footer */
+  footer {
+    background:#111; text-align:center; padding:25px 10px; color:#999;
+    border-top:1px solid rgba(255,255,255,0.1); font-size:14px;
+    margin-top:50px;
+  }
+
+  @media(max-width:768px){
+    nav { padding:15px 30px; flex-wrap:wrap; justify-content:center; }
+    .nav-links { gap:20px; }
+    .hero { height:50vh; padding:0 30px 30px 30px; }
+    .content { flex-direction:column; align-items:center; }
+    .details button { width:100%; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav>
+    <div class="logo">ArmoryX</div>
+    <div class="nav-links">
+      <a href="Home_Page.html">Home</a>
+      <a href="Service_Terms.html">Service Terms</a>
+      <a href="Contact_Page.html">Contact</a>
+      <a href="About_Page.html">About</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-text">
+      <h1>Glock 19</h1>
+      <p>Compact, reliable, and trusted by professionals worldwide.</p>
+    </div>
+  </section>
+
+  <!-- MAIN CONTENT -->
+  <section class="content">
+    <img src="flock19.webp" alt="Glock 19">
+
+    <div class="details">
+      <h2>Glock 19 Specifications</h2>
+      <p>The Glock 19 is one of the most popular compact pistols in the world. Known for its lightweight polymer frame, reliability, and ease of use, it is widely used by law enforcement, military units, and civilian shooters.</p>
+      <ul>
+        <li>Caliber: 9×19mm</li>
+        <li>Magazine Capacity: 15 rounds</li>
+        <li>Weight: 600g (without magazine)</li>
+        <li>Barrel Length: 102 mm</li>
+        <li>Action: Safe Action® System</li>
+      </ul>
+      <button onclick="window.location.href='Order_Page.html'">Order Now</button>
+      <button onclick="addToCart()">Add to Cart</button>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    © 2025 ArmoryX. All Rights Reserved. | Designed by <span style="color:#00ffc8;">Zubair</span>
+  </footer>
+
+  <script>
+  function addToCart() {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const item = {
+      name: "Glock 19",
+      price: 950, // adjust price as needed
+      img: "flock19.webp",
+      qty: 1
+    };
+    const index = cart.findIndex(i => i.name === item.name);
+    if(index !== -1) cart[index].qty += 1;
+    else cart.push(item);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    alert("Item added to cart!");
+  }
+
+  // Scroll hide navbar
+  let lastScrollTop = 0;
+  const nav = document.querySelector('nav');
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    nav.style.transform = scrollTop > lastScrollTop ? 'translateY(-100%)' : 'translateY(0)';
+    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+  });
+  </script>
+
+</body>
+</html>
